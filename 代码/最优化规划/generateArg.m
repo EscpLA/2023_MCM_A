@@ -1,0 +1,32 @@
+clear;clc;
+%% 生成最优参数
+% 随机生成十组最优的模型参数(x1, x2, x3)
+Xsup = randi([15, 30], 1, 1);
+n = 30; %数据的组数
+optimalArg = zeros(n, 4); %模拟出的最优参数，是n*3的矩阵
+optimalArg(:, 1) = randi([0, Xsup], n, 1);
+for i = 2:3 % 修改第二列和第三列
+    for j = 1:n
+        sup = Xsup - sum(optimalArg, 2);
+
+        optimalArg(j, i) = randi([0,sup(j)], 1, 1);
+    end
+end
+optimalArg(:, 4) = sum(optimalArg, 2);
+
+
+
+%% 生成每一组最优参数对应的目标函数值
+clear;clc;
+load bestArg.mat;
+n = length(bestArg); % 最优参数的组数
+% 12000+12600+10800=35400g, 目标函数值应该在 35400上下浮动
+biomass = 35400;
+inte = 2000; % 目标函数上下浮动的区间
+bestArg(:, 5) = randi([biomass-inte, biomass+inte], n, 1);
+biomass_max = max(bestArg(:, 5));
+biomass_mean = mean(bestArg(:, 5));
+
+[max, index] = max(bestArg(:, 5));
+
+
